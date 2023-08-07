@@ -1,7 +1,7 @@
 #載入LineBot 所需套件
 from line_bot_api import *
 from events.basic import *
-from events.oil import *
+from events.oil2 import *
 app = Flask(__name__)
 
 #監聽所有來自 /callback 的 Post Request
@@ -33,7 +33,10 @@ def handle_message(event):
     if message_text == '@小愛同學':
         about_us_event(event)
         Usage(event)
-    elif not(event.message.text == '油價查詢' or event.message.text == '@使用說明' or event.message.text == '股價查詢' or event.message.text == '@小愛同學'):
+    elif not(event.message.text == '油價查詢' 
+         or event.message.text == '@使用說明' 
+         or event.message.text == '股價查詢' 
+         or event.message.text == '@小愛同學'):
         free_msg(event)
 
 ################### 使用說明 ###################
@@ -52,10 +55,12 @@ def handle_message(event):
 @handler.add(FollowEvent)
 def handel_follow(event):
     welcome_msg = """好久不見! 小愛好想你🥺 
-還記得小愛嗎                                                                     
--小愛能幫您查詢股票、油價和匯率資訊喔~
--請點選下方【Finance Widget】的選單功能
--期待您的使用！"""
+
+還記得小愛嗎      
+
+✨ 小愛能幫您查詢股票、油價和匯率資訊喔~
+✨ 請點選下方【Finance Widget】的選單功能
+✨ 期待您的使用！"""
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=welcome_msg))
