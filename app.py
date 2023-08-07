@@ -33,7 +33,7 @@ def handle_message(event):
     if message_text == '@小愛同學':
         about_us_event(event)
         Usage(event)
-    else:
+    elif message_text != '油價查詢' | message_text != '@使用說明' | message_text != '股價查詢':
         free_msg(event)
 
 ################### 使用說明 ###################
@@ -51,10 +51,8 @@ def handle_message(event):
 
 @handler.add(FollowEvent)
 def handel_follow(event):
-    welcome_msg = """Hello! 小愛好想你🥺 
-                                       
-我是 小愛同學
-                                       
+    welcome_msg = """好久不見! 小愛好想你🥺 
+還記得小愛嗎                                                                     
 -小愛能幫您查詢股票、油價和匯率資訊喔~
 -請點選下方【Finance Widget】的選單功能
 -期待您的使用！"""
