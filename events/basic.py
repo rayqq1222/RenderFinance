@@ -33,9 +33,33 @@ Hello! 歡迎您成為 Finance Widget 的好友！
         package_id = '11539',
         sticker_id ='52114118'
     )
+
+    buttons_template = TemplateSendMessage(
+            alt_text = '小愛同學template',
+            template=ButtonsTemplate(
+            title = "選擇服務",
+            text = '請選擇',
+            thumbnail_image_url='https://i.imgur.com/decXwFE.jpg',
+            actions=[
+            MessageTemplateAction(
+            label = '油價查詢',
+            text = '油價查詢'
+            ),
+            MessageTemplateAction(
+            label = '匯率查詢',
+            text = '匯率查詢'
+            ),
+            MessageTemplateAction(
+            label = '股價查詢',
+            text = '股價查詢'
+            )
+            ]
+            )
+        )
     line_bot_api.reply_message(
         event.reply_token,
-        [text_message, sticker_message])
+        [text_message, sticker_message, buttons_template])
+    
 def push_msg(event,msg):
     try:
         user_id = event.source.user_id
@@ -47,7 +71,6 @@ def Usage(event):
     push_msg(event, '💛💛💛 查詢方法 💛💛💛 \
     \n\
     \n👧🏻 小愛可查詢油價、匯率和股價喔\
-    \n\  @小愛同學就會馬上來幫助你喔\
     \n\
     \n🔴 油價通知--->輸入查詢油價\
     \n🟢 匯率通知--->換匯USD/TWD\
