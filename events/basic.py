@@ -26,7 +26,7 @@ Hello! 歡迎您成為 Finance Widget 的好友！
 我是 小愛同學
                                        
 -這裡有股票、油價和匯率資訊喔~
--請直接點選下方【Finance Widget】的選單功能
+-請點選下方【Finance Widget】的選單功能
 -期待您的使用！ ''', emojis = emoji)
     
     sticker_message = StickerSendMessage(
