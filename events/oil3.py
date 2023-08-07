@@ -4,6 +4,7 @@ def oil_price():
     import requests
 
     re = requests.get(url)
+    re.encoding = 'utf-8'
     soup = BeautifulSoup(re.text, 'lxml')
     #'html.parser'
 
@@ -13,11 +14,11 @@ def oil_price():
     items = list1.find_all('li')
     #print(len(items))
 
-    content=['本週油價：']
+    content='--本週油價--'
     for item in items:
         title = item.find('div', class_='col-4')
         price = item.find('strong')
         unit = item.find('small')
-        result = ('%s%s %s' %(title.text.replace(" ",'').replace('\n\n\n', ''), price.text.replace(" ",'').replace('\n\n', ''), unit.text))
-        content.append(result)
+        result = ('%s%s \n%s' %(title.text.replace(" ",'').replace('\n\n\n', ''), price.text.replace(" ",'').replace('\n\n', ''), unit.text))
+        content += result
     return content
