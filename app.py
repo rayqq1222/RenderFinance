@@ -55,7 +55,7 @@ Hello! 歡迎您成為 Finance Widget 的好友！
 -請直接點選下方【Finance Widget】的選單功能
 -期待您的使用！ ''', emojis=emoji)
     
-    sticker_message = StickerMessage(
+    sticker_message = StickerSendMessage(
         package_id='8522',
         sticker_id='16581271'
     )
