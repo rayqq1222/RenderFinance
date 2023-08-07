@@ -8,7 +8,7 @@ def oil_price():
     res.encoding = 'utf-8'
     soup = BeautifulSoup(res.text, 'html.parser')
     title = soup.select('h2.elementor-heading-title elementor-size-default b')[0].text.replace('\n', '').split('(')[0]
-    gas_price = soup.select('#gas-price')[0].text.replace('\n\n\n', '').replace(' ', '')
-    cpc = soup.select('#cpc')[0].text.replace(' ', '')
-    content = '{}\n{}{}'.format(title, gas_price, cpc)
+    #gas_price = soup.select('#gas-price')[0].text.replace('\n\n\n', '').replace(' ', '')
+    #cpc = soup.select('#cpc')[0].text.replace(' ', '')
+    content = '{}\n{}{}'.format(title)
     return content
