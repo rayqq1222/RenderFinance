@@ -31,13 +31,13 @@ def handle_message(event):
         about_us_event(event)
         Usage(event)
     else:
-        print('請稍候，小愛同學馬上回來💙')
+        free_msg(event)
 
 ################### 使用說明 ###################
     if message_text == '@使用說明':
         about_us_event(event)
         Usage(event)
-    if event.message.text == '想知道油價':
+    if event.message.text == '油價查詢':
         content = oil_price()
         line_bot_api.reply_message(
             event.reply.token,
