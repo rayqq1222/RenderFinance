@@ -26,11 +26,11 @@ def callback():
 def handle_message(event):
     message_text = str(event.message.text).lower()
 
-    if message_text == '@使用說明':
+    if message_text == '@小愛同學':
         about_us_event(event)
         Usage(event)
     
-    if event.message.text == "@小愛同學":
+    if event.message.text == "@使用說明":
         buttons_template = TemplateSendMessage(
             alt_text = '小愛同學template',
             template=ButtonsTemplate(
@@ -38,7 +38,7 @@ def handle_message(event):
             text = '請選擇',
             thumbnail_image_url='https://i.imgur.com/decXwFE.jpg',
             actions=[
-                MessageTemplateAction(
+            MessageTemplateAction(
             label = '油價查詢',
             text = '油價查詢'
             ),
