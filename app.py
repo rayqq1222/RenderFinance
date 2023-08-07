@@ -47,7 +47,7 @@ def handle_message(event):
         content = oil_price()
         line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(content))
+        TextSendMessage(*content))
 ################# 股票查詢 #####################
     if message_text == '股價查詢':
         line_bot_api.push_message(uid, TextSendMessage('請輸入#股票代號..(例如：#2330)'))
