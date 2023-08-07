@@ -37,16 +37,16 @@ def handle_message(event):
         {
             "index" : 0,
             "productId" : "5ac21184040ab15980c9b43a",
-            "emoji" : "255"
+            "emojiID" : "255"
         },
         {
             "index" : 17,
             "productId" : "5ac21184040ab15980c9b43a",
-            "emojiId" : "225"
+            "emojiID" : "225"
         }
     ]
 
-    text_message = TemplateSendMessage(text='''$ Finance Widget $
+    text_message = TextSendMessage(text='''$ Finance Widget $
 Hello! 歡迎您成為 Finance Widget 的好友！ 
                                        
 我是 小愛同學
