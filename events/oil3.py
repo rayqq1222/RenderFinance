@@ -13,10 +13,11 @@ def oil_price():
     items = list1.find_all('li')
     #print(len(items))
 
-
+    content=[]
     for item in items:
         title = item.find('div', class_='col-4')
         price = item.find('strong')
         unit = item.find('small')
-        content = ('%s%s%s' %(title.text.replace(" ",'').replace('\n\n\n', ''), price.text.replace(" ",'').replace('\n\n', ''), unit.text))
+        result = ('%s%s %s' %(title.text.replace(" ",'').replace('\n\n\n', ''), price.text.replace(" ",'').replace('\n\n', ''), unit.text))
+        content.append(result)
         return content
