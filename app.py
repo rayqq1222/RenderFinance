@@ -41,8 +41,22 @@ def handle_message(event):
         content = oil_price()
         line_bot_api.reply_message(
             event.reply.token,
-            TextSendMessage(text=content)
-        )
+            TextSendMessage(text=content))
+@handler.add(FollowEvent)
+def handel_follow(event):
+    welcome_msg = """Hello! 小愛好想你🥺 
+                                       
+我是 小愛同學
+                                       
+-小愛能幫您查詢股票、油價和匯率資訊喔~
+-請點選下方【Finance Widget】的選單功能
+-期待您的使用！"""
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=welcome_msg))
+@handler.add(UnfollowEvent)
+def handle_unfollow(event):
+    print(event)
 
     
 
