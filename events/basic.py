@@ -44,12 +44,12 @@ def push_msg(event,msg):
         room_id = event.source.room_id
         line_bot_api.push_message(room_id, TextSendMessage(text=msg))
 def Usage(event):
-    push_msg(event, '💛查詢方法💛 \
+    push_msg(event, '💛💛💛 查詢方法 💛💛💛 \
     \n\
-    \n👻小幫手可以查詢油價、匯率、股價\
+    \n👧🏻 小愛可查詢油價、匯率、股價喔🫶🏻\
     \n\
-    \n👻 油價通知--輸入查詢油價\
-    \n👻 匯率通知--換匯USD/TWD\
-    \n👻 股價通知--輸入股票代號')
+    \n🔴 油價通知↛輸入查詢油價\
+    \n🟢 匯率通知--換匯USD/TWD\
+    \n🔵 股價通知--輸入股票代號')
     
                                    
