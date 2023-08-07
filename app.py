@@ -28,11 +28,42 @@ def callback():
         abort(400)
 
     return 'OK'
+
+#處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token, message)
+    
+    emoji = [
+        {
+            "index" : 0,
+            "productId" : "5ac21184040ab15980c9b43a",
+            "emoji" : "255"
+        },
+        {
+            "index" : 18,
+            "productId" : "5ac21184040ab15980c9b43a",
+            "emojiId" : "225"
+        }
+    ]
 
+    text_message = TemplateSendMessage(text='''$ Finance Widget $
+Hello! 歡迎您成為 Finance Widget 的好友！ 
+                                       
+我是 小愛同學
+                                       
+-這裡有股票、油價和匯率資訊喔~
+-請直接點選下方【Finance Widget】的選單功能
+-期待您的使用！ ''', emojis=emoji)
+    
+    sticker_message = StickerMessage(
+        package_id='8522',
+        sticker_id='16581271'
+    )
+    line_bot_api.reply_message(
+        event.reply_token,
+        [text_message, sticker_message])
 
+                                       
 if __name__ == "__main__":
     app.run()
+
