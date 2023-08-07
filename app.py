@@ -33,7 +33,7 @@ def handle_message(event):
     if message_text == '@小愛同學':
         about_us_event(event)
         Usage(event)
-    elif event.message.text != '油價查詢' or event.message.text != '@使用說明' or event.message.text != '股價查詢':
+    elif not(event.message.text == '油價查詢' or event.message.text == '@使用說明' or event.message.text == '股價查詢' or event.message.text == '@小愛同學'):
         free_msg(event)
 
 ################### 使用說明 ###################
