@@ -46,7 +46,8 @@ def push_msg(event,msg):
 def Usage(event):
     push_msg(event, '💛💛💛 查詢方法 💛💛💛 \
     \n\
-    \n👧🏻 小愛可查詢油價、匯率、股價喔🫶🏻\
+    \n👧🏻 小愛可查詢油價、匯率和股價喔\
+    \n\  @小愛同學就會馬上來幫助你喔\
     \n\
     \n🔴 油價通知--->輸入查詢油價\
     \n🟢 匯率通知--->換匯USD/TWD\
