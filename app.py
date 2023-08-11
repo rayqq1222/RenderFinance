@@ -142,7 +142,7 @@ def handle_message(event):
         content += '量: %s\n'%(stock_rt['realtime']['accumulate_trade_volume'])
 
         stock = twstock.Stock(text)
-        content += '-----\n'
+        content += '--------\n'
         content += '最近五日價格: \n'
         price5 = stock.price[-5:][::-1]
         date5 = stock.date[-5:][::-1]
@@ -205,7 +205,7 @@ def handle_message(event):
                                      dataList[i][k]['condition'],
                                      dataList[i][k]['price'],
                                      dataList[i][k]['userID']) 
-        schedule.every(30).second.do(job).tag('daily-task-stock'+uid, 'second')#每18執行一次
+        schedule.every(30).second.do(job).tag('daily-task-stock'+uid, 'second')#每30秒執行一次
         while True:
             schedule.run_pending()
             time.sleep(1)
@@ -220,19 +220,6 @@ def handel_follow(event):
 ✨ 小愛能幫您查詢股票、油價和匯率資訊喔~
 ✨ 請點選下方【Finance Widget】的選單功能
 ✨ 期待您的使用！"""
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=welcome_msg))
-                                              
-@handler.add(FollowEvent)
-def handle_follow(event):
-    welcome_msg = '''HiHi 歡迎成為基德的夥伴！
-                                
-- 這裡有股票和匯率資訊哦
-- 直接點選下方圖中選單功能
-                                   
-期待你的使用！'''
-                                  
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=welcome_msg))
