@@ -1,22 +1,28 @@
-# 載入LineBot所需的套件
+#載入LineBot 所需套件
 from line_bot_api import *
 from events.basic import *
-from events.oil import *
+from events.oil3 import *
 from events.EXRate import *
 from events.Msg_Template import *
 from model.mongodb import *
 import re
 import twstock
 import datetime
-
 app = Flask(__name__)
+#抓取使用者設定他關心的股票
+def cache_users_stock():
+    db = constructor_stock()
+    nameList = db.list_collection_names()
+    users = []
+    for i in range(len(nameList)):
+        collect = db[nameList[i]]
+        cel = list(collect.find({"tag":"stock"}))
+        users.append(cel)
+    return users
+                                       
 
-# 必須放上自己的Channel Access Token
-line_bot_api = LineBotApi('y183jnCciIWryNOI+kTjMm80wyo/KStYQCOLMlqrz4UZ62jOrdkaKMZ/N51MWbMfeqPB6pLdVbTxBim+pn6HExanDVsx7N994f0uOPVrVE/iBJiwBCWexTrbmIFrf5P3CG8LbKBseyKInUlkvynGgwdB04t89/1O/w1cDnyilFU=')
-# 必須放上自己的Channel Secret
-handler = WebhookHandler('b0d867b52ea2085d294fbf521e2119d6')
 
-# 監聽所有來自 /callback 的 Post Request
+#監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -38,50 +44,34 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     profile = line_bot_api.get_profile(event.source.user_id)
-    uid = profile.user_id
+    uid = profile.user_id  # 使用者id
     message_text = str(event.message.text).lower()
     msg = str(event.message.text).upper().strip()
     # 使用者輸入的內容
     emsg = event.message.text
     user_name = profile.display_name #使用者名稱
 
-    ############################## 使用說明 選單 基德 油價查詢 ##############################
+
+
+    if message_text == '@小愛同學':
+        about_us_event(event)
+        Usage(event)
+    elif not(event.message.text == '油價查詢' 
+         or event.message.text == '@使用說明' 
+         or event.message.text == '股價查詢' 
+         or event.message.text == '@小愛同學'):
+        free_msg(event)
+
+################### 使用說明 ###################
     if message_text == '@使用說明':
         about_us_event(event)
         Usage(event)
-
-    if event.message.text == "@基德":
-        buttons_template = TemplateSendMessage(
-            alt_text = '你已得到基德的幫助',
-            template=ButtonsTemplate(
-                title='選擇服務',
-                text='請選擇',
-                thumbnail_image_url='https://imgur.com/mBwctnk.jpg',
-                actions=[
-                    MessageTemplateAction(
-                        label="油價查詢",
-                        text = '想知道油價'
-                    ),
-                    MessageTemplateAction(
-                        label="匯率查詢",
-                        text = '匯率查詢'
-                    ),
-                    MessageTemplateAction(
-                        label="股價查詢",
-                        text = '股價查詢'
-                    )
-                ]
-            )
-        )
-        line_bot_api.reply_message(event.reply_token, buttons_template)
-
-    if event.message.text == '想知道油價':
+    if message_text == '油價查詢':
         content = oil_price()
         line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=content)
+        event.reply_token,
+        TextSendMessage(content))
 
-        )
     ############################## 股票區 ##############################
     if event.message.text == "股價查詢":
         line_bot_api.push_message(uid, TextSendMessage("請輸入#股票代號"))
@@ -111,6 +101,25 @@ def handle_message(event):
     #     line_bot_api.push_message(uid, TextSendMessage(content))
         return 0
     
+    #查詢股票篩選清單
+    if re.match('股票清單',msg):
+        line_bot_api.push_message(uid, TextSendMessage('請稍等，股票查詢中...'))
+        content = show_stock_setting(user_name, uid)
+        line_bot_api.push_message(uid, TextSendMessage(content))
+        return 0
+    
+    #刪除存在資料庫裡面的股票
+    if re.match('刪除[0-9]{4}',msg):
+        content = delete_my_stock(user_name, msg[2:])
+        line_bot_api.push_message(uid, TextSendMessage(content))
+        return 0
+    
+    # 清空存在資料庫裡的股票
+    if re.match('清空股票', msg):
+        content = delete_my_allstock(user_name, uid)
+        line_bot_api.push_message(uid, TextSendMessage(content))
+        return 0
+    
     if (emsg.startswith('#')):
         text = emsg[1:]
         content =''
@@ -133,7 +142,7 @@ def handle_message(event):
         content += '量: %s\n'%(stock_rt['realtime']['accumulate_trade_volume'])
 
         stock = twstock.Stock(text)
-        content += '-----\n'
+        content += '--------\n'
         content += '最近五日價格: \n'
         price5 = stock.price[-5:][::-1]
         date5 = stock.date[-5:][::-1]
@@ -148,20 +157,70 @@ def handle_message(event):
         message = show_Button()
         line_bot_api.reply_message(event.reply_token, message)
 
+    if re.match('查詢匯率[A-Z]{3}', msg):
+        msg = msg[4:]
+        content = showCurrency(msg)
+        line_bot_api.push_message(uid, TextSendMessage(content))
+
     if re.match('換匯[A-Z]{3}/[A-Z]{3}/100',msg):
-        line_bot_api.push_message(uid, TextSendMessage("基德將為您做外匯計算"))
+        line_bot_api.push_message(uid, TextSendMessage("小愛將為您做外匯計算"))
         content = getExchangeRate(msg)
         line_bot_api.push_message(uid, TextSendMessage(content))
-                                              
+############股價提醒#############
+
+    if re.match("股價提醒",msg):
+        import schedule
+        import time
+        #查看當前股價
+        def look_stock_price(stock, condition, price, userID):
+            print(userID)
+            url = 'https://tw.stock.yahoo.com/q/q?s=' + stock
+            list_req = requests.get(url)
+            soup = BeautifulSoup(list_req.content, 'html/parser')
+            getstock = soup.findAll('span')[1].text
+            context = stock + "當前股市價格為：" + getstock
+            if condition == "<" :
+                content += "\n篩選條件為：<" + price
+                if float(getstock) < float(price):
+                    content += "\n符合" + getstock + "<" + price + "的篩選條件"
+                    line_bot_api.push_message(userID, TextSendMessage(text=content))
+            elif condition == ">" :
+                content += "\n篩選條件為：>" + price
+                if float(getstock) < float(price):
+                    content += "\n符合" + getstock + ">" + price + "的篩選條件"
+                    line_bot_api.push_message(userID, TextSendMessage(text=content))
+            elif condition == "=":
+                content += "\n篩選條件為：=" + price
+                if float(getstock) == float(price):
+                    content += "\n符合" + getstock + "=" + price + "的篩選條件"
+                    line_bot_api.push_message(userID, TextSendMessage(text=content))
+        def job():
+            print("HH")
+            line_bot_api.push_message(uid, TextSendMessage('快快下單喔！'))
+            dataList = cache_users_stock()
+            # print(dataList)
+            for i in range(len(dataList)):
+                for k in range(len(dataList[i])):
+                    # print(dataList[i][k])
+                    look_stock_price(dataList[i][k]['favorite_stock'], 
+                                     dataList[i][k]['condition'],
+                                     dataList[i][k]['price'],
+                                     dataList[i][k]['userID']) 
+        schedule.every(30).second.do(job).tag('daily-task-stock'+uid, 'second')#每30秒執行一次
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+
+
 @handler.add(FollowEvent)
-def handle_follow(event):
-    welcome_msg = '''HiHi 歡迎成為基德的夥伴！
-                                
-- 這裡有股票和匯率資訊哦
-- 直接點選下方圖中選單功能
-                                   
-期待你的使用！'''
-                                  
+def handel_follow(event):
+    welcome_msg = """好久不見! 小愛好想你🥺 
+
+還記得小愛嗎      
+
+✨ 小愛能幫您查詢股票、油價和匯率資訊喔~
+✨ 請點選下方【Finance Widget】的選單功能
+✨ 期待您的使用！"""
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=welcome_msg))
@@ -172,3 +231,4 @@ def handle_unfollow(event):
 
 if __name__ == "__main__":
     app.run()
+    
