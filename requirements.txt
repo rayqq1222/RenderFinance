@@ -10,4 +10,3 @@ datetime
 numpy
 pandas
 matplotlib
-gunicorn
