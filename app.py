@@ -183,15 +183,15 @@ def handle_message(event):
                     content += "\n符合" + getstock + " = " + price + "的篩選條件"
                     line_bot_api.push_message(userID, TextSendMessage(text=content))
         def job():
-            print('HH')
-            line_bot_api.push_message(uid, TextSendMessage("快買股票喔!"))
+            print('啟動喔')
+            line_bot_api.push_message(uid , TextSendMessage("快買股票喔!"))
             dataList = cache_users_stock()
             # print(dataList)
             for i in range(len(dataList)):
                 for k in range(len(dataList[i])):
                     # print(dataList[i][k])
                     look_stock_price(dataList[i][k]['favorite_stock'], dataList[i][k]['condition'], dataList[i][k]['price'], dataList[i][k]['userID'])
-        schedule.every(30).seconds.do(job).tag('daily-tasks-stock'+uid,'second') #每30秒執行一次
+        schedule.every(5).seconds.do(job).tag('daily-tasks-stock'+uid,'second') #每10秒執行一次
         #schedule.every().hour.do(job) #每小時執行一次
         #schedule.every().day.at("17:19").do(job) #每天9點30執行一次
         #schedule.every().monday.do(job) #每週一執行一次
