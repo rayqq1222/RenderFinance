@@ -1,0 +1,174 @@
+{
+  "type": "bubble",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "image",
+            "url": "https://imgur.com/qaWcROS.jpg",
+            "size": "full",
+            "flex": 1,
+            "aspectRatio": "16:9",
+            "aspectMode": "fit",
+            "backgroundColor": "#272829"
+          }
+        ],
+        "position": "relative",
+        "borderWidth": "bold",
+        "spacing": "none",
+        "margin": "lg"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://imgur.com/IAJQBsm.png",
+                "size": "full",
+                "backgroundColor": "#F6F4EB",
+                "aspectMode": "cover"
+              }
+            ],
+            "width": "72px",
+            "height": "72px",
+            "cornerRadius": "100px",
+            "position": "relative"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "contents": [],
+                "size": "xl",
+                "text": "股價到價提醒",
+                "weight": "bold",
+                "action": {
+                  "type": "message",
+                  "label": "到價提醒",
+                  "text": "股價提醒"
+                },
+                "color": "#F6F4EB",
+                "style": "normal",
+                "position": "relative",
+                "align": "start",
+                "gravity": "center",
+                "margin": "md"
+              },
+              {
+                "type": "text",
+                "text": "到價提醒定時通知價格",
+                "size": "xs",
+                "color": "#FFE17B",
+                "weight": "regular",
+                "style": "normal",
+                "decoration": "none",
+                "position": "relative",
+                "align": "end"
+              }
+            ]
+          }
+        ],
+        "spacing": "xl",
+        "paddingAll": "20px"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://imgur.com/uDlndU5.png",
+                "size": "full",
+                "backgroundColor": "#F6F4EB",
+                "margin": "none",
+                "aspectMode": "fit"
+              }
+            ],
+            "width": "72px",
+            "height": "72px",
+            "cornerRadius": "100px"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "contents": [],
+                "size": "xl",
+                "text": "匯率即期推播",
+                "action": {
+                  "type": "message",
+                  "label": "匯率提醒",
+                  "text": "匯率提醒"
+                },
+                "weight": "bold",
+                "color": "#F6F4EB",
+                "margin": "md",
+                "style": "normal",
+                "position": "relative",
+                "align": "start",
+                "gravity": "bottom"
+              },
+              {
+                "type": "text",
+                "text": "匯率價格即時呈現",
+                "color": "#FFE17B",
+                "size": "xs",
+                "weight": "regular",
+                "style": "normal",
+                "decoration": "none",
+                "position": "relative",
+                "align": "end"
+              }
+            ]
+          }
+        ],
+        "spacing": "xl",
+        "paddingAll": "20px"
+      }
+    ],
+    "paddingAll": "0px"
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "關閉提醒",
+        "size": "lg",
+        "weight": "bold",
+        "align": "center",
+        "color": "#B31312",
+        "action": {
+          "type": "message",
+          "label": "action",
+          "text": "關閉提醒"
+        },
+        "style": "normal"
+      }
+    ]
+  },
+  "styles": {
+    "body": {
+      "backgroundColor": "#272829"
+    }
+  }
+}
