@@ -37,26 +37,3 @@ def write_my_stock(userID, user_name, stockNumber, condition , target_price):
             })
         return f"{stockNumber}已新增至您的股票清單"
 
-#   -----------    秀出使用者的股票條件       -------------
-def show_stock_setting(user_name, userID):
-    db = constructor_stock()
-    collect = db[user_name]
-    dataList = list(collect.find({"userID": userID}))
-    if dataList == []: return "您的股票清單是空的，請透過指令新增股票至清單中"
-    content = "您清單中的選股條件為: \n"
-    for i in range(len(dataList)):
-        content += f'{dataList[i]["favorite_stock"]}{dataList[i]["condition"]}{dataList[i]["price"]}\n'
-    return content
-#   -----------    刪除使用者特定的股票       -------------
-def delete_my_stock(user_name, stockNumber):
-    db = constructor_stock()
-    collect = db[user_name]
-    collect.delete_one({'favorite_stock': stockNumber})
-    return stockNumber + "刪除成功"
-
-#   -----------    刪除使用者股票清單內所有的股票       -------------
-def delete_my_allstock(user_name, userID):
-    db = constructor_stock()
-    collect = db[user_name]
-    collect.delete_many({'userID': userID})
-    return "全部股票刪除成功"
